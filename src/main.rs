@@ -149,8 +149,8 @@ impl SimpleState for Example {
 fn main() -> amethyst::Result<()> {
     amethyst::start_logger(Default::default());
 
-    let root = application_root_dir() + "\\resources";
-    let display_config_full_path = root.to_string() + "\\display_config.ron";
+    let root = application_root_dir() + "/resources";
+    let display_config_full_path = root.to_string() + "/display_config.ron";
     let config = DisplayConfig::load(&display_config_full_path);
     let pipe = Pipeline::build().with_stage(
         Stage::with_backbuffer()
@@ -162,7 +162,7 @@ fn main() -> amethyst::Result<()> {
             )),
     );
 
-    let input_full_path = root.to_string() + "\\input.ron";
+    let input_full_path = root.to_string() + "/input.ron";
     let game_data = GameDataBuilder::default()
         .with_bundle(TransformBundle::new())?
         .with_bundle(
