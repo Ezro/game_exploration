@@ -1,0 +1,22 @@
+# Unwanted files
+amethyst_assets/target
+amethyst_config/target
+amethyst_renderer/target
+book/book
+target
+Cargo.lock
+
+# Backup files
+.DS_Store
+thumbs.db
+*~
+*.rs.bk
+*.swp
+
+# IDE / Editor files
+*.iml
+.idea
+.vscode
+
+# Thread profiler output
+thread_profile.json
