@@ -117,7 +117,7 @@ fn init_player(world: &mut World, sprite_sheet: &SpriteSheetHandle) -> Entity {
         .build()
 }
 
-fn init_camera(world: &mut World, parent: Entity) {
+fn init_camera(world: &mut World) {
     let mut transform = Transform::default();
     transform.set_z(1.0);
     world
@@ -125,9 +125,7 @@ fn init_camera(world: &mut World, parent: Entity) {
         .with(Camera::from(Projection::orthographic(
             -960.0, 960.0, -540.0, 540.0,
         )))
-        .with(Parent { entity: parent })
         .with(transform)
-        // .with(PlayerCamera {})
         .build();
 }
 
@@ -143,8 +141,8 @@ impl SimpleState for Example {
 
         let _background = init_background_sprite(world, &background_sprite_sheet_handle);
         let _reference = init_reference_sprite(world, &circle_sprite_sheet_handle);
-        let parent = init_player(world, &circle_sprite_sheet_handle);
-        init_camera(world, parent);
+        let player = init_player(world, &circle_sprite_sheet_handle);
+        init_camera(world);
     }
 }
 
