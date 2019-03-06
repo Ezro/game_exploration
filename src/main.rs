@@ -41,8 +41,7 @@ impl<'s> System<'s> for MovementSystem {
 }
 
 #[derive(Default)]
-struct PlayerCamera {
-}
+struct PlayerCamera;
 
 impl Component for PlayerCamera {
     type Storage = NullStorage<Self>;
