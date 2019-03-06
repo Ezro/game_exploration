@@ -154,6 +154,7 @@ fn init_camera(world: &mut World) {
             -960.0, 960.0, -540.0, 540.0,
         )))
         .with(transform)
+        .with(PlayerCamera)
         .build();
 }
 
@@ -197,6 +198,7 @@ fn main() -> amethyst::Result<()> {
             InputBundle::<String, String>::new().with_bindings_from_file(input_full_path)?,
         )?
         .with(MovementSystem, "movement", &[])
+        .with(CameraFollowSystem, "camera_follow_system", &[])
         .with_bundle(
             RenderBundle::new(pipe, Some(config))
                 .with_sprite_sheet_processor()
