@@ -57,14 +57,24 @@ impl<'s> System<'s> for CameraFollowSystem {
     );
 
     fn run(&mut self, (players, mut cameras, mut transforms): Self::SystemData) {
-        // let player_transforms: Vec<_> = (&transforms, &players).join().collect();
-        // let camera_transforms: Vec<_> = (&mut transforms, &cameras).join().collect();
-        // for (c, _) in camera_transforms {
-        //     for (p, _) in player_transforms {
-        //         let t = p.translation();
-        //         c.set_x(t.x);
-        //     }
-        // }
+        let player_transform = {
+            let mut player_transforms = (&transforms, &players).join();
+            let player_transform = player_transforms
+                .next()
+                .map(|(transform, _)| transform.clone());
+            if player_transforms.next().is_some() {
+                // you probably want to do something to handle this case properly, but
+                println!("WARN: More than one player entity!")
+            }
+            player_transform
+        };
+
+        if let Some(player_transform) = player_transform {
+            for (camera_transform, _) in (&mut transforms, &cameras).join() {
+                camera_transform.set_x(player_transform.translation().x);
+                camera_transform.set_y(player_transform.translation().y);
+            }
+        }
     }
 }
 
