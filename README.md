@@ -3,7 +3,7 @@ The goal of this effort is to create a camera_follow_system that will have any e
 
 _Components_
 - [x] Player
-- [ ] PlayerCamera
+- [x] PlayerCamera
 
 _Systems_
-- [ ] camera_follow_system
+- [x] camera_follow_system
