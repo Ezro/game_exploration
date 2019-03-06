@@ -48,6 +48,18 @@ impl Component for PlayerCamera {
     type Storage = NullStorage<Self>;
 }
 
+struct CameraFollowSystem;
+impl<'s> System<'s> for CameraFollowSystem {
+    type SystemData = (
+        ReadStorage<'s, Player>,
+        WriteStorage<'s, PlayerCamera>,
+        WriteStorage<'s, Transform>
+    );
+
+    fn run(&mut self, (players, mut cameras, mut transforms): Self::SystemData) {
+    }
+}
+
 fn load_sprite_sheet(world: &mut World, png_path: &str, ron_path: &str) -> SpriteSheetHandle {
     let texture_handle = {
         let loader = world.read_resource::<Loader>();
