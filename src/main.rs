@@ -57,6 +57,14 @@ impl<'s> System<'s> for CameraFollowSystem {
     );
 
     fn run(&mut self, (players, mut cameras, mut transforms): Self::SystemData) {
+        // let player_transforms: Vec<_> = (&transforms, &players).join().collect();
+        // let camera_transforms: Vec<_> = (&mut transforms, &cameras).join().collect();
+        // for (c, _) in camera_transforms {
+        //     for (p, _) in player_transforms {
+        //         let t = p.translation();
+        //         c.set_x(t.x);
+        //     }
+        // }
     }
 }
 
