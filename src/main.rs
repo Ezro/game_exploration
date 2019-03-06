@@ -2,7 +2,7 @@ use amethyst;
 
 use amethyst::{
     assets::{AssetStorage, Loader},
-    core::{Parent, Transform, TransformBundle},
+    core::{Transform, TransformBundle},
     ecs::{Component, Entity, Join, NullStorage, Read, ReadStorage, System, WriteStorage},
     input::{InputBundle, InputHandler},
     prelude::*,
@@ -22,7 +22,6 @@ impl Component for Player {
 }
 
 struct MovementSystem;
-
 impl<'s> System<'s> for MovementSystem {
     type SystemData = (
         ReadStorage<'s, Player>,
@@ -141,7 +140,7 @@ impl SimpleState for Example {
 
         let _background = init_background_sprite(world, &background_sprite_sheet_handle);
         let _reference = init_reference_sprite(world, &circle_sprite_sheet_handle);
-        let player = init_player(world, &circle_sprite_sheet_handle);
+        let _player = init_player(world, &circle_sprite_sheet_handle);
         init_camera(world);
     }
 }
