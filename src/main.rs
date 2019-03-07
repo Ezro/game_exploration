@@ -183,7 +183,7 @@ fn init_player(world: &mut World, sprite_sheet: &SpriteSheetHandle) -> Entity {
         .with(Player)
         .with(sprite)
         .with(Transparent)
-        .with(AABB { halfsize_x: 50, halfsize_y: 50 })
+        .with(AABB { halfsize_x: 32, halfsize_y: 32 })
         .build()
 }
 
