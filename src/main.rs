@@ -7,7 +7,7 @@ use amethyst::{
     input::{InputBundle, InputHandler},
     prelude::*,
     renderer::{
-        Camera, ColorMask, DepthMode, DisplayConfig, DrawFlat2D, Pipeline, PngFormat, Projection,
+        Camera, ColorMask, DepthMode, DisplayConfig, DrawDebugLines, DrawFlat2D, Pipeline, PngFormat, PosColorNorm, Projection,
         RenderBundle, Rgba, SpriteRender, SpriteSheet, SpriteSheetFormat, SpriteSheetHandle, Stage,
         Texture, TextureMetadata, Transparent, ALPHA, DebugLines
     },
@@ -231,7 +231,8 @@ fn main() -> amethyst::Result<()> {
                 ColorMask::all(),
                 ALPHA,
                 Some(DepthMode::LessEqualWrite), // Tells the pipeline to respect sprite z-depth
-            )),
+            ))
+            .with_pass(DrawDebugLines::<PosColorNorm>::new()),
     );
 
     let input_full_path = root.to_string() + "/input.ron";
