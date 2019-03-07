@@ -80,16 +80,9 @@ struct AABB {
     halfsize_x: u32,
     halfsize_y: u32
 }
+
 impl Component for AABB {
     type Storage = VecStorage<Self>;
-}
-
-enum ColliderType {
-    Rect,
-    Circle,
-}
-struct Collider {
-    collider_type: ColliderType,
 }
 
 struct DrawAABBSystem;
