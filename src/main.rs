@@ -77,6 +77,8 @@ impl<'s> System<'s> for CameraFollowSystem {
 
 #[derive(Default)]
 struct AABB {
+    x: f32,
+    y: f32,
     halfsize_x: u32,
     halfsize_y: u32
 }
@@ -85,20 +87,34 @@ impl Component for AABB {
     type Storage = VecStorage<Self>;
 }
 
+struct AABBFollowSystem;
+impl<'s> System<'s> for AABBFollowSystem {
+    type SystemData = (
+        WriteStorage<'s, AABB>,
+        ReadStorage<'s, Transform>,
+    );
+
+    fn run(&mut self, (mut aabbs, transforms): Self::SystemData) {
+        for (aabb, t) in (&mut aabbs, &transforms).join() {
+            aabb.x = t.translation().x;
+            aabb.y = t.translation().y;
+        }
+    }
+}
+
 struct DrawAABBSystem;
 impl<'s> System<'s> for DrawAABBSystem {
     type SystemData = (
         Write<'s, DebugLines>,
         ReadStorage<'s, AABB>,
-        ReadStorage<'s, Transform>,
     );
 
-    fn run(&mut self, (mut debug_lines_resource, aabbs, transforms): Self::SystemData) {
-        for (aabb, t) in (&aabbs, &transforms).join() {
+    fn run(&mut self, (mut debug_lines_resource, aabbs): Self::SystemData) {
+        for aabb in (&aabbs).join() {
             let x = aabb.halfsize_x as f32;
             let y = aabb.halfsize_y as f32;
-            let t_x = t.translation().x;
-            let t_y = t.translation().y;
+            let t_x = aabb.x;
+            let t_y = aabb.y;
             let top_left_x = t_x - x;
             let top_left_y = t_y + y;
             let top_right_x = t_x + x;
@@ -179,7 +195,7 @@ fn init_reference_sprite(world: &mut World, sprite_sheet: &SpriteSheetHandle) ->
         .with(transform)
         .with(sprite)
         .with(Transparent)
-        .with(AABB { halfsize_x: 32, halfsize_y: 32 })
+        .with(AABB { x: 0.0, y: 0.0, halfsize_x: 32, halfsize_y: 32 })
         .build()
 }
 
@@ -197,7 +213,7 @@ fn init_player(world: &mut World, sprite_sheet: &SpriteSheetHandle) -> Entity {
         .with(Player)
         .with(sprite)
         .with(Transparent)
-        .with(AABB { halfsize_x: 32, halfsize_y: 32 })
+        .with(AABB { x: 0.0, y: 0.0, halfsize_x: 32, halfsize_y: 32 })
         .build()
 }
 
@@ -259,6 +275,7 @@ fn main() -> amethyst::Result<()> {
             InputBundle::<String, String>::new().with_bindings_from_file(input_full_path)?,
         )?
         .with(MovementSystem, "movement", &[])
+        .with(AABBFollowSystem, "aabb_follow_system", &[])
         .with(CameraFollowSystem, "camera_follow_system", &[])
         .with(DrawAABBSystem, "draw_aabb_system", &[])
         .with_bundle(
