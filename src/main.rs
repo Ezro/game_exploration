@@ -219,7 +219,7 @@ impl SimpleState for Example {
         init_camera(world);
         world.add_resource(DebugLines::new());
         world.add_resource(DebugLinesParams {
-            line_width: 500.0
+            line_width: 5.0
         });
     }
 }
