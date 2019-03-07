@@ -179,6 +179,7 @@ fn init_reference_sprite(world: &mut World, sprite_sheet: &SpriteSheetHandle) ->
         .with(transform)
         .with(sprite)
         .with(Transparent)
+        .with(AABB { halfsize_x: 32, halfsize_y: 32 })
         .build()
 }
 
