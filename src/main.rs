@@ -20,21 +20,30 @@ impl Component for Player {
     type Storage = NullStorage<Self>;
 }
 
+#[derive(Default)]
+struct Speed {
+    speed: f32
+}
+impl Component for Speed {
+    type Storage = VecStorage<Self>;
+}
+
 struct MovementSystem;
 impl<'s> System<'s> for MovementSystem {
     type SystemData = (
         ReadStorage<'s, Player>,
+        ReadStorage<'s, Speed>,
         WriteStorage<'s, Transform>,
         Read<'s, InputHandler<String, String>>,
     );
 
-    fn run(&mut self, (players, mut transforms, input): Self::SystemData) {
+    fn run(&mut self, (players, speeds, mut transforms, input): Self::SystemData) {
         let x_move = input.axis_value("entity_x").unwrap();
         let y_move = input.axis_value("entity_y").unwrap();
 
-        for (_, transform) in (&players, &mut transforms).join() {
-            transform.translate_x(x_move as f32 * 5.0);
-            transform.translate_y(y_move as f32 * 5.0);
+        for (_, speed, transform) in (&players, &speeds, &mut transforms).join() {
+            transform.translate_x(x_move as f32 * speed.speed);
+            transform.translate_y(y_move as f32 * speed.speed);
         }
     }
 }
@@ -214,6 +223,7 @@ fn init_player(world: &mut World, sprite_sheet: &SpriteSheetHandle) -> Entity {
         .with(sprite)
         .with(Transparent)
         .with(AABB { x: 0.0, y: 0.0, halfsize_x: 32, halfsize_y: 32 })
+        .with(Speed { speed: 5.0 } )
         .build()
 }
 
