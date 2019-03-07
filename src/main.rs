@@ -90,28 +90,31 @@ impl<'s> System<'s> for DrawAABBSystem {
     type SystemData = (
         Write<'s, DebugLines>,
         ReadStorage<'s, AABB>,
+        ReadStorage<'s, Transform>,
     );
 
-    fn run(&mut self, (mut debug_lines_resource, aabbs): Self::SystemData) {
-        for aabb in (&aabbs).join() {
+    fn run(&mut self, (mut debug_lines_resource, aabbs, transforms): Self::SystemData) {
+        for (aabb, t) in (&aabbs, &transforms).join() {
+            let t_x = t.translation().x;
+            let t_y = t.translation().y;
             debug_lines_resource.draw_line(
-                [-(aabb.halfsize_x as f32), aabb.halfsize_y as f32, 0.0].into(),
-                [aabb.halfsize_x as f32, aabb.halfsize_y as f32, 0.0].into(),
+                [-(aabb.halfsize_x as f32  + t_x), aabb.halfsize_y as f32 + t_y, 0.0].into(),
+                [aabb.halfsize_x as f32 + t_x, aabb.halfsize_y as f32 + t_y, 0.0].into(),
                 Rgba::black(),
             );
             debug_lines_resource.draw_line(
-                [aabb.halfsize_x as f32, aabb.halfsize_y as f32, 0.0].into(),
-                [aabb.halfsize_x as f32, -(aabb.halfsize_y as f32), 0.0].into(),
+                [aabb.halfsize_x as f32 + t_x, aabb.halfsize_y as f32 + t_y, 0.0].into(),
+                [aabb.halfsize_x as f32 + t_x, -(aabb.halfsize_y as f32 + t_y), 0.0].into(),
                 Rgba::black(),
             );
             debug_lines_resource.draw_line(
-                [aabb.halfsize_x as f32, -(aabb.halfsize_y as f32), 0.0].into(),
-                [-(aabb.halfsize_x as f32), -(aabb.halfsize_y as f32), 0.0].into(),
+                [aabb.halfsize_x as f32 + t_x, -(aabb.halfsize_y as f32 + t_y), 0.0].into(),
+                [-(aabb.halfsize_x as f32 + t_x), -(aabb.halfsize_y as f32 + t_y), 0.0].into(),
                 Rgba::black(),
             );
             debug_lines_resource.draw_line(
-                [-(aabb.halfsize_x as f32), -(aabb.halfsize_y as f32), 0.0].into(),
-                [-(aabb.halfsize_x as f32), aabb.halfsize_y as f32, 0.0].into(),
+                [-(aabb.halfsize_x as f32 + t_x), -(aabb.halfsize_y as f32 + t_y), 0.0].into(),
+                [-(aabb.halfsize_x as f32 + t_x), aabb.halfsize_y as f32 + t_y, 0.0].into(),
                 Rgba::black(),
             );
         }
