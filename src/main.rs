@@ -2,21 +2,20 @@ use amethyst;
 
 use amethyst::{
     assets::{AssetStorage, Loader},
-    core::{Transform, TransformBundle},
-    ecs::{Component, Entity, Join, NullStorage, Read, ReadStorage, System, WriteStorage},
+    core::{nalgebra::{Point3}, Transform, TransformBundle},
+    ecs::{Component, Entity, Join, NullStorage, Read, ReadStorage, System, VecStorage, Write, WriteStorage},
     input::{InputBundle, InputHandler},
     prelude::*,
     renderer::{
         Camera, ColorMask, DepthMode, DisplayConfig, DrawFlat2D, Pipeline, PngFormat, Projection,
-        RenderBundle, SpriteRender, SpriteSheet, SpriteSheetFormat, SpriteSheetHandle, Stage,
-        Texture, TextureMetadata, Transparent, ALPHA,
+        RenderBundle, Rgba, SpriteRender, SpriteSheet, SpriteSheetFormat, SpriteSheetHandle, Stage,
+        Texture, TextureMetadata, Transparent, ALPHA, DebugLines
     },
     utils::application_root_dir,
 };
 
 #[derive(Default)]
 struct Player;
-
 impl Component for Player {
     type Storage = NullStorage<Self>;
 }
@@ -72,6 +71,56 @@ impl<'s> System<'s> for CameraFollowSystem {
                 camera_transform.set_x(player_transform.translation().x);
                 camera_transform.set_y(player_transform.translation().y);
             }
+        }
+    }
+}
+
+#[derive(Default)]
+struct AABB {
+    halfsize_x: u32,
+    halfsize_y: u32
+}
+impl Component for AABB {
+    type Storage = VecStorage<Self>;
+}
+
+enum ColliderType {
+    Rect,
+    Circle,
+}
+struct Collider {
+    collider_type: ColliderType,
+}
+
+struct DrawAABBSystem;
+impl<'s> System<'s> for DrawAABBSystem {
+    type SystemData = (
+        Write<'s, DebugLines>,
+        ReadStorage<'s, AABB>,
+    );
+
+    fn run(&mut self, (mut debug_lines_resource, aabbs): Self::SystemData) {
+        for aabb in (&aabbs).join() {
+            debug_lines_resource.draw_line(
+                [-(aabb.halfsize_x as f32), aabb.halfsize_y as f32, 0.0].into(),
+                [aabb.halfsize_x as f32, aabb.halfsize_y as f32, 0.0].into(),
+                Rgba::black(),
+            );
+            debug_lines_resource.draw_line(
+                [aabb.halfsize_x as f32, aabb.halfsize_y as f32, 0.0].into(),
+                [aabb.halfsize_x as f32, -(aabb.halfsize_y as f32), 0.0].into(),
+                Rgba::black(),
+            );
+            debug_lines_resource.draw_line(
+                [aabb.halfsize_x as f32, -(aabb.halfsize_y as f32), 0.0].into(),
+                [-(aabb.halfsize_x as f32), -(aabb.halfsize_y as f32), 0.0].into(),
+                Rgba::black(),
+            );
+            debug_lines_resource.draw_line(
+                [-(aabb.halfsize_x as f32), -(aabb.halfsize_y as f32), 0.0].into(),
+                [-(aabb.halfsize_x as f32), aabb.halfsize_y as f32, 0.0].into(),
+                Rgba::black(),
+            );
         }
     }
 }
@@ -141,6 +190,7 @@ fn init_player(world: &mut World, sprite_sheet: &SpriteSheetHandle) -> Entity {
         .with(Player)
         .with(sprite)
         .with(Transparent)
+        .with(AABB { halfsize_x: 50, halfsize_y: 50 })
         .build()
 }
 
@@ -171,6 +221,7 @@ impl SimpleState for Example {
         let _reference = init_reference_sprite(world, &circle_sprite_sheet_handle);
         let _player = init_player(world, &circle_sprite_sheet_handle);
         init_camera(world);
+        world.add_resource(DebugLines::new());
     }
 }
 
@@ -198,12 +249,12 @@ fn main() -> amethyst::Result<()> {
         )?
         .with(MovementSystem, "movement", &[])
         .with(CameraFollowSystem, "camera_follow_system", &[])
+        .with(DrawAABBSystem, "draw_aabb_system", &[])
         .with_bundle(
             RenderBundle::new(pipe, Some(config))
                 .with_sprite_sheet_processor()
                 .with_sprite_visibility_sorting(&[]), // Let's us use the `Transparent` component
         )?;
-
     let mut game = Application::build(root, Example)?.build(game_data)?;
     game.run();
     Ok(())
