@@ -95,26 +95,36 @@ impl<'s> System<'s> for DrawAABBSystem {
 
     fn run(&mut self, (mut debug_lines_resource, aabbs, transforms): Self::SystemData) {
         for (aabb, t) in (&aabbs, &transforms).join() {
+            let x = aabb.halfsize_x as f32;
+            let y = aabb.halfsize_y as f32;
             let t_x = t.translation().x;
             let t_y = t.translation().y;
+            let top_left_x = t_x - x;
+            let top_left_y = t_y + y;
+            let top_right_x = t_x + x;
+            let top_right_y = t_y + y;
+            let bottom_right_x = t_x + x;
+            let bottom_right_y = t_y - y;
+            let bottom_left_x = t_x - x;
+            let bottom_left_y = t_y - y;
             debug_lines_resource.draw_line(
-                [-(aabb.halfsize_x as f32  + t_x), aabb.halfsize_y as f32 + t_y, 0.0].into(),
-                [aabb.halfsize_x as f32 + t_x, aabb.halfsize_y as f32 + t_y, 0.0].into(),
+                [top_left_x, top_left_y, 0.0].into(),
+                [top_right_x, top_right_y, 0.0].into(),
                 Rgba::black(),
             );
             debug_lines_resource.draw_line(
-                [aabb.halfsize_x as f32 + t_x, aabb.halfsize_y as f32 + t_y, 0.0].into(),
-                [aabb.halfsize_x as f32 + t_x, -(aabb.halfsize_y as f32 + t_y), 0.0].into(),
+                [top_right_x, top_right_y, 0.0].into(),
+                [bottom_right_x, bottom_right_y, 0.0].into(),
                 Rgba::black(),
             );
             debug_lines_resource.draw_line(
-                [aabb.halfsize_x as f32 + t_x, -(aabb.halfsize_y as f32 + t_y), 0.0].into(),
-                [-(aabb.halfsize_x as f32 + t_x), -(aabb.halfsize_y as f32 + t_y), 0.0].into(),
+                [bottom_right_x, bottom_right_y, 0.0].into(),
+                [bottom_left_x, bottom_left_y, 0.0].into(),
                 Rgba::black(),
             );
             debug_lines_resource.draw_line(
-                [-(aabb.halfsize_x as f32 + t_x), -(aabb.halfsize_y as f32 + t_y), 0.0].into(),
-                [-(aabb.halfsize_x as f32 + t_x), aabb.halfsize_y as f32 + t_y, 0.0].into(),
+                [bottom_left_x, bottom_left_y, 0.0].into(),
+                [top_left_x, top_left_y, 0.0].into(),
                 Rgba::black(),
             );
         }
