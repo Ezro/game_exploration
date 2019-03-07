@@ -2,7 +2,7 @@ use amethyst;
 
 use amethyst::{
     assets::{AssetStorage, Loader},
-    core::{nalgebra::{Point3}, Transform, TransformBundle},
+    core::{Transform, TransformBundle},
     ecs::{Component, Entity, Join, NullStorage, Read, ReadStorage, System, VecStorage, Write, WriteStorage},
     input::{InputBundle, InputHandler},
     prelude::*,
