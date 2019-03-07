@@ -110,22 +110,22 @@ impl<'s> System<'s> for DrawAABBSystem {
             debug_lines_resource.draw_line(
                 [top_left_x, top_left_y, 0.0].into(),
                 [top_right_x, top_right_y, 0.0].into(),
-                Rgba::black(),
+                Rgba::green(),
             );
             debug_lines_resource.draw_line(
                 [top_right_x, top_right_y, 0.0].into(),
                 [bottom_right_x, bottom_right_y, 0.0].into(),
-                Rgba::black(),
+                Rgba::green(),
             );
             debug_lines_resource.draw_line(
                 [bottom_right_x, bottom_right_y, 0.0].into(),
                 [bottom_left_x, bottom_left_y, 0.0].into(),
-                Rgba::black(),
+                Rgba::green(),
             );
             debug_lines_resource.draw_line(
                 [bottom_left_x, bottom_left_y, 0.0].into(),
                 [top_left_x, top_left_y, 0.0].into(),
-                Rgba::black(),
+                Rgba::green(),
             );
         }
     }
@@ -202,7 +202,7 @@ fn init_player(world: &mut World, sprite_sheet: &SpriteSheetHandle) -> Entity {
 
 fn init_camera(world: &mut World) {
     let mut transform = Transform::default();
-    transform.set_z(1.0);
+    transform.set_z(10.0);
     world
         .create_entity()
         .with(Camera::from(Projection::orthographic(
