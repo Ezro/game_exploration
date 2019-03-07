@@ -224,13 +224,13 @@ impl SimpleState for Example {
         let background_sprite_sheet_handle =
             load_sprite_sheet(world, "Background.png", "Background.ron");
 
-        // let _background = init_background_sprite(world, &background_sprite_sheet_handle);
+        let _background = init_background_sprite(world, &background_sprite_sheet_handle);
         let _reference = init_reference_sprite(world, &circle_sprite_sheet_handle);
         let _player = init_player(world, &circle_sprite_sheet_handle);
         init_camera(world);
         world.add_resource(DebugLines::new());
         world.add_resource(DebugLinesParams {
-            line_width: 5.0
+            line_width: 10.0
         });
     }
 }
