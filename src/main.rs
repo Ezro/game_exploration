@@ -42,7 +42,6 @@ impl<'s> System<'s> for MovementSystem {
 
 #[derive(Default)]
 struct PlayerCamera;
-
 impl Component for PlayerCamera {
     type Storage = NullStorage<Self>;
 }
@@ -51,11 +50,11 @@ struct CameraFollowSystem;
 impl<'s> System<'s> for CameraFollowSystem {
     type SystemData = (
         ReadStorage<'s, Player>,
-        WriteStorage<'s, PlayerCamera>,
+        ReadStorage<'s, PlayerCamera>,
         WriteStorage<'s, Transform>
     );
 
-    fn run(&mut self, (players, mut cameras, mut transforms): Self::SystemData) {
+    fn run(&mut self, (players, cameras, mut transforms): Self::SystemData) {
         let player_transform = {
             let mut player_transforms = (&transforms, &players).join();
             let player_transform = player_transforms
