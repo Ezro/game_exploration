@@ -1,8 +1,8 @@
 # Game Development Exploration using Amethyst
 
 ## ToDo List
-### camera_follow_system
-The goal of this system is to have any entity with a PlayerCamera component to follow a single Player entity.
+### Camera Follow
+The goal of this effort is to have any entity with a PlayerCamera component follow a single Player entity.
 
 _Components_
 - [x] Player
