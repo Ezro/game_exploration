@@ -1,6 +1,6 @@
 use amethyst::{
     assets::{AssetStorage, Loader},
-    core::Transform,
+    core::{math::Vector2, Transform},
     ecs::Entity,
     prelude::*,
     renderer::{
@@ -66,8 +66,10 @@ fn init_background_sprite(world: &mut World, sprite_sheet: &SpriteSheetHandle) -
 // Initialize a sprite as a reference point at a fixed location
 fn init_reference_sprite(world: &mut World, sprite_sheet: &SpriteSheetHandle) -> Entity {
     let mut transform = Transform::default();
-    transform.set_translation_x(100.0);
-    transform.set_translation_y(0.0);
+    let pos_x = 100.0;
+    let pos_y = 0.0;
+    transform.set_translation_x(pos_x);
+    transform.set_translation_y(pos_y);
     let sprite = SpriteRender {
         sprite_sheet: sprite_sheet.clone(),
         sprite_number: 0,
@@ -77,8 +79,12 @@ fn init_reference_sprite(world: &mut World, sprite_sheet: &SpriteSheetHandle) ->
         .with(transform)
         .with(sprite)
         .with(Transparent)
-        .with(AABB { x: 0.0, y: 0.0 })
-        .with(Size { x: 64.0, y: 64.0 })
+        .with(AABB {
+            min: Vector2::new(0.0, 0.0),
+            max: Vector2::new(0.0, 0.0),
+        })
+        .with(Position { x: pos_x, y: pos_y })
+        .with(Size { x: 64, y: 64 })
         .build()
 }
 
@@ -96,11 +102,14 @@ fn init_player(world: &mut World, sprite_sheet: &SpriteSheetHandle) -> Entity {
         .with(Player)
         .with(sprite)
         .with(Transparent)
-        .with(AABB { x: 0.0, y: 0.0 })
+        .with(AABB {
+            min: Vector2::new(-32.0, -32.0),
+            max: Vector2::new(32.0, 32.0),
+        })
         .with(Speed { speed: 5.0 })
         .with(Position { x: 0.0, y: 0.0 })
         .with(Heading { x: 0.0, y: -1.0 })
-        .with(Size { x: 64.0, y: 64.0 })
+        .with(Size { x: 64, y: 64 })
         .build()
 }
 

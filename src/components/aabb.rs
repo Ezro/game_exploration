@@ -1,9 +1,11 @@
-use amethyst::ecs::{Component, VecStorage};
+use amethyst::{
+    core::math::Vector2,
+    ecs::{Component, VecStorage},
+};
 
-#[derive(Default)]
 pub struct AABB {
-    pub x: f32,
-    pub y: f32,
+    pub min: Vector2<f32>,
+    pub max: Vector2<f32>,
 }
 
 impl Component for AABB {
