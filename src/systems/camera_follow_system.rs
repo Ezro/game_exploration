@@ -1,6 +1,6 @@
 use amethyst::{
-    core::{Transform},
-    ecs::{Join, ReadStorage, System, WriteStorage}
+    core::Transform,
+    ecs::{Join, ReadStorage, System, WriteStorage},
 };
 
 use crate::components::*;
@@ -28,8 +28,8 @@ impl<'s> System<'s> for CameraFollowSystem {
 
         if let Some(player_transform) = player_transform {
             for (camera_transform, _) in (&mut transforms, &cameras).join() {
-                camera_transform.set_x(player_transform.translation().x);
-                camera_transform.set_y(player_transform.translation().y);
+                camera_transform.set_translation_x(player_transform.translation().x);
+                camera_transform.set_translation_y(player_transform.translation().y);
             }
         }
     }

@@ -1,5 +1,5 @@
 use amethyst::{
-    core::Transform,
+    core::{math::Vector3, Transform},
     ecs::{Join, Read, ReadStorage, System, WriteStorage},
     input::InputHandler,
 };
@@ -23,8 +23,12 @@ impl<'s> System<'s> for MovementSystem {
         for (_, position, speed, transform) in
             (&players, &mut positions, &speeds, &mut transforms).join()
         {
-            transform.translate_x(x_move as f32 * speed.speed);
-            transform.translate_y(y_move as f32 * speed.speed);
+            let translation: Vector3<f32> = Vector3::new(
+                x_move as f32 * speed.speed,
+                y_move as f32 * speed.speed,
+                0.0,
+            );
+            transform.append_translation(translation);
             position.x = transform.translation().x;
             position.y = transform.translation().y;
         }

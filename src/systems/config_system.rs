@@ -2,7 +2,7 @@ use amethyst::{ecs::System, prelude::*, renderer::DisplayConfig, utils::applicat
 
 use std::time::{SystemTime, UNIX_EPOCH};
 
-pub const DISPLAY_CONFIG_FILENAME: &str = "/display_config.ron";
+pub const DISPLAY_CONFIG_FILENAME: &str = "display_config.ron";
 const CHECK_INTERVAL_SEC: u32 = 5;
 
 pub struct CustomConfig {
@@ -26,8 +26,8 @@ impl<'s> System<'s> for ConfigSystem {
             .unwrap()
             .as_secs();
         if (current_sec - previous_sec) as u32 > CHECK_INTERVAL_SEC {
-            let root = application_root_dir() + "/resources";
-            let display_config_full_path = root.to_string() + DISPLAY_CONFIG_FILENAME;
+            let root = application_root_dir().unwrap().join("/resources");
+            let display_config_full_path = root.join(DISPLAY_CONFIG_FILENAME);
             let config = DisplayConfig::load(&display_config_full_path);
             println!("{}", config.dimensions.unwrap().1);
             self.config.last_check_time = now;
