@@ -23,9 +23,7 @@ fn main() -> amethyst::Result<()> {
     // amethyst::start_logger(Default::default());
 
     let app_root = application_root_dir()?;
-    println!("{:?}", app_root);
     let root = application_root_dir()?.join("resources");
-    println!("{:?}", root);
     let pipe = Pipeline::build().with_stage(
         Stage::with_backbuffer()
             .clear_target([0.1, 0.1, 0.1, 1.0], 1.0)
@@ -33,9 +31,7 @@ fn main() -> amethyst::Result<()> {
             .with_pass(DrawDebugLines::<PosColorNorm>::new()),
     );
     let input_full_path = root.join("input.ron");
-    println!("{:?}", input_full_path);
     let display_config_full_path = root.join(DISPLAY_CONFIG_FILENAME);
-    println!("{:?}", display_config_full_path);
     let display_config = DisplayConfig::load(&display_config_full_path);
     let config = CustomConfig {
         last_check_time: UNIX_EPOCH,

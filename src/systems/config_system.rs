@@ -29,7 +29,6 @@ impl<'s> System<'s> for ConfigSystem {
             let root = application_root_dir().unwrap().join("/resources");
             let display_config_full_path = root.join(DISPLAY_CONFIG_FILENAME);
             let config = DisplayConfig::load(&display_config_full_path);
-            println!("{}", config.dimensions.unwrap().1);
             self.config.last_check_time = now;
         }
     }
