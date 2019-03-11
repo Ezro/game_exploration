@@ -3,6 +3,7 @@ use amethyst::{
     ecs::{Component, VecStorage},
 };
 
+#[derive(Clone)]
 pub struct AABB {
     pub min: Vector2<f32>,
     pub max: Vector2<f32>,

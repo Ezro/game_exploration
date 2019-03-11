@@ -79,8 +79,8 @@ fn init_reference_sprite(world: &mut World, sprite_sheet: &SpriteSheetHandle) ->
         .with(sprite)
         .with(Transparent)
         .with(AABB {
-            min: Vector2::new(0.0, 0.0),
-            max: Vector2::new(0.0, 0.0),
+            min: Vector2::new(-32.0, -32.0),
+            max: Vector2::new(32.0, 32.0),
         })
         .with(Position { x: pos_x, y: pos_y })
         .with(Size { x: 64, y: 64 })

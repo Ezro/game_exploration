@@ -37,14 +37,19 @@ fn main() -> amethyst::Result<()> {
     };
     let game_data = GameDataBuilder::default()
         .with_bundle(TransformBundle::new())?
+        // Config
         .with_bundle(
             InputBundle::<String, String>::new().with_bindings_from_file(input_full_path)?,
         )?
         .with(ConfigSystem { config }, "config_system", &[])
+        // Movement
         .with(MovementSystem, "movement_system", &[])
         .with(HeadingSystem, "heading_system", &[])
         .with(AABBFollowSystem, "aabb_follow_system", &[])
         .with(CameraFollowSystem, "camera_follow_system", &[])
+        // Physics
+        .with(PhysicsSystem, "physics_system", &[])
+        // Debug
         .with(DrawAABBSystem, "draw_aabb_system", &[])
         .with(DrawHeadingSystem, "draw_heading_system", &[])
         .with_bundle(
