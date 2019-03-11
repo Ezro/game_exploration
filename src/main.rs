@@ -20,9 +20,8 @@ use amethyst::{
 use std::time::UNIX_EPOCH;
 
 fn main() -> amethyst::Result<()> {
-    // amethyst::start_logger(Default::default());
+    amethyst::start_logger(Default::default());
 
-    let app_root = application_root_dir()?;
     let root = application_root_dir()?.join("resources");
     let pipe = Pipeline::build().with_stage(
         Stage::with_backbuffer()

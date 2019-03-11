@@ -26,7 +26,7 @@ impl<'s> System<'s> for ConfigSystem {
             .unwrap()
             .as_secs();
         if (current_sec - previous_sec) as u32 > CHECK_INTERVAL_SEC {
-            let root = application_root_dir().unwrap().join("/resources");
+            let root = application_root_dir().unwrap().join("resources");
             let display_config_full_path = root.join(DISPLAY_CONFIG_FILENAME);
             let config = DisplayConfig::load(&display_config_full_path);
             self.config.last_check_time = now;

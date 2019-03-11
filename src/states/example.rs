@@ -19,7 +19,6 @@ impl SimpleState for Example {
             load_sprite_sheet(world, "Circle_Spritesheet.png", "Circle_Spritesheet.ron");
         let background_sprite_sheet_handle =
             load_sprite_sheet(world, "Background.png", "Background.ron");
-
         let _background = init_background_sprite(world, &background_sprite_sheet_handle);
         let _reference = init_reference_sprite(world, &circle_sprite_sheet_handle);
         let _player = init_player(world, &circle_sprite_sheet_handle);
