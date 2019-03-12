@@ -1,3 +1,6 @@
+#[macro_use]
+extern crate lazy_static;
+
 use amethyst;
 
 pub mod components;
@@ -6,6 +9,7 @@ pub mod systems;
 
 use self::states::*;
 use self::systems::*;
+use self::systems::physics::*;
 
 use amethyst::{
     core::TransformBundle,
@@ -48,7 +52,8 @@ fn main() -> amethyst::Result<()> {
         .with(AABBFollowSystem, "aabb_follow_system", &[])
         .with(CameraFollowSystem, "camera_follow_system", &[])
         // Physics
-        .with(PhysicsSystem, "physics_system", &[])
+        .with(GenerateCollisionManifoldsSystem, "generate_collision_manifolds_system", &[])
+        .with(GenerateConstraintsSystem, "generate_constraints_system", &[])
         // Debug
         .with(DrawAABBSystem, "draw_aabb_system", &[])
         .with(DrawHeadingSystem, "draw_heading_system", &[])
