@@ -13,12 +13,14 @@ use amethyst::{
 };
 use crate::components::*;
 
+#[derive(Debug)]
 pub struct Contact {
     pub position: Vector2<f32>,
     pub normal: Vector2<f32>,
     pub penetration: f32
 }
 
+#[derive(Debug)]
 pub struct Manifold {
     pub contacts: [Contact; 2],
     pub contact_count: u32,

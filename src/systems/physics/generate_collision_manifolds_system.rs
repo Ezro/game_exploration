@@ -5,6 +5,7 @@ use amethyst::{
 };
 use crate::components::*;
 use crate::systems::physics::physics::ENTITIES_COLLIDING;
+use crate::systems::physics::physics::COLLISION_MANIFOLDS;
 use crate::systems::physics::physics::Contact;
 use crate::systems::physics::physics::Manifold;
 
@@ -31,6 +32,8 @@ impl<'s> System<'s> for GenerateCollisionManifoldsSystem {
                         if !ENTITIES_COLLIDING.lock().unwrap().contains(&be_id) {
                             ENTITIES_COLLIDING.lock().unwrap().push(be_id);
                         }
+                        let m = generate_collision_manifold(a.clone(), b.clone());
+                        COLLISION_MANIFOLDS.lock().unwrap().push(m);
                     }
                     else {
                         if ENTITIES_COLLIDING.lock().unwrap().contains(&ae_id) {

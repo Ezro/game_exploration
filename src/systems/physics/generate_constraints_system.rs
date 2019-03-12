@@ -15,5 +15,8 @@ impl<'s> System<'s> for GenerateConstraintsSystem {
     );
 
     fn run(&mut self, _: Self::SystemData) {
+        while let Some(m) =  COLLISION_MANIFOLDS.lock().unwrap().pop() {
+            println!("{:?}", m);
+        }
     }
 }
