@@ -1,6 +1,7 @@
 use amethyst::ecs::{Component, VecStorage};
+use serde::*;
 
-#[derive(Default)]
+#[derive(Default, Serialize, Deserialize)]
 pub struct Speed {
     pub speed: f32,
 }

@@ -2,8 +2,9 @@ use amethyst::{
     core::math::Vector2,
     ecs::{Component, VecStorage},
 };
+use serde::*;
 
-#[derive(Clone)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct AABB {
     pub min: Vector2<f32>,
     pub max: Vector2<f32>,

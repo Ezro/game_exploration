@@ -7,6 +7,7 @@ pub mod components;
 pub mod states;
 pub mod systems;
 
+use self::components::*;
 use self::states::*;
 use self::systems::*;
 use self::systems::physics::*;
@@ -21,10 +22,17 @@ use amethyst::{
     utils::application_root_dir,
 };
 
+use amethyst_editor_sync::*;
+use tap::*;
+
 use std::time::UNIX_EPOCH;
 
 fn main() -> amethyst::Result<()> {
     amethyst::start_logger(Default::default());
+
+    let editor_sync_bundle = SyncEditorBundle::default()
+        .tap(SyncEditorBundle::sync_default_types)
+        .tap(|bundle| sync_components!(bundle, AABB, Heading, PlayerCamera, Player, Position, Size, Speed));
 
     let root = application_root_dir()?.join("resources");
     let pipe = Pipeline::build().with_stage(
@@ -61,7 +69,8 @@ fn main() -> amethyst::Result<()> {
             RenderBundle::new(pipe, Some(display_config))
                 .with_sprite_sheet_processor()
                 .with_sprite_visibility_sorting(&[]), // Let's us use the `Transparent` component
-        )?;
+        )?
+        .with_bundle(editor_sync_bundle)?;
     let mut game = Application::build(root, Example)?.build(game_data)?;
     game.run();
     Ok(())
