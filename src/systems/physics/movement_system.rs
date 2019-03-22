@@ -29,8 +29,6 @@ impl<'s> System<'s> for MovementSystem {
                 0.0,
             );
             transform.append_translation(translation);
-            position.x = transform.translation().x;
-            position.y = transform.translation().y;
         }
     }
 }

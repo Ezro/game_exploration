@@ -1,5 +1,4 @@
 use amethyst::{
-    core::Transform,
     ecs::{Join, ReadStorage, System, WriteStorage},
 };
 

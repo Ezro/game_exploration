@@ -1,10 +1,11 @@
-use amethyst::{
-    core::{math::{Vector, Vector2}, Transform},
-    ecs::{Entity, Entities, Join, ReadStorage, System, Write, WriteStorage},
-    renderer::{DebugLines, Rgba},
-};
 use crate::components::*;
 use crate::systems::physics::physics::COLLISION_MANIFOLDS;
+use amethyst::{
+    core::{
+        Transform,
+    },
+    ecs::{ReadStorage, System},
+};
 
 pub struct GenerateConstraintsSystem;
 impl<'s> System<'s> for GenerateConstraintsSystem {
@@ -14,9 +15,9 @@ impl<'s> System<'s> for GenerateConstraintsSystem {
         ReadStorage<'s, Heading>,
     );
 
-    fn run(&mut self, _: Self::SystemData) {
-        while let Some(m) =  COLLISION_MANIFOLDS.lock().unwrap().pop() {
-            println!("{:?}", m);
+    fn run(&mut self, (aabbs, _, _): Self::SystemData) {
+        while let Some(m) = COLLISION_MANIFOLDS.lock().unwrap().pop() {
+            // println!("{:?}", m);
         }
     }
 }
